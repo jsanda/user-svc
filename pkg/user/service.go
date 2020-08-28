@@ -6,11 +6,11 @@ import (
 	"github.com/jsanda/user-svc/pkg/pb"
 )
 
-type UserService struct {
+type Service struct {
 	cassClient *cassandra.Client
 }
 
-func NewUserService(cassandraSvc string) (*UserService, error) {
+func NewService(cassandraSvc string) (*Service, error) {
 	cassClient, err := cassandra.NewClient(cassandraSvc)
 	if err != nil {
 		return nil, err
@@ -20,15 +20,15 @@ func NewUserService(cassandraSvc string) (*UserService, error) {
 		return nil, err
 	}
 
-	return &UserService{cassClient: cassClient}, nil
+	return &Service{cassClient: cassClient}, nil
 }
 
-func (s *UserService) CreateUser(ctx context.Context, user *pb.User) (*pb.CreateUserResponse, error) {
+func (s *Service) CreateUser(ctx context.Context, user *pb.User) (*pb.CreateUserResponse, error) {
 	err := s.cassClient.CreateUser(cassandra.User{Email: user.Email, Name: user.Name})
 	return &pb.CreateUserResponse{}, err
 }
 
-func (s *UserService) GetUsers(context.Context, *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
+func (s *Service) GetUsers(context.Context, *pb.GetUsersRequest) (*pb.GetUsersResponse, error) {
 	users, err := s.cassClient.GetUsers()
 	if err != nil {
 		return nil, err

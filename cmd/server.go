@@ -21,7 +21,7 @@ func main() {
 	}
 
 	log.Println("creating UserService")
-	userSvc, err := user.NewUserService(os.Getenv("CASSANDRA_SVC"))
+	userSvc, err := user.NewService(os.Getenv("CASSANDRA_SVC"))
 	if err != nil {
 		log.Fatalf("failed to create UserService: %s", err)
 	}
