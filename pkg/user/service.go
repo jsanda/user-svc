@@ -1,4 +1,4 @@
-package grpc
+package user
 
 import (
 	"context"
@@ -10,9 +10,13 @@ type UserService struct {
 	cassClient *cassandra.Client
 }
 
-func newUserService(cassandraSvc string) (*UserService, error) {
+func NewUserService(cassandraSvc string) (*UserService, error) {
 	cassClient, err := cassandra.NewClient(cassandraSvc)
 	if err != nil {
+		return nil, err
+	}
+
+	if err = cassClient.InitSchema(); err != nil {
 		return nil, err
 	}
 
